@@ -4,9 +4,7 @@ import com.twu.biblioteca.domain.Book;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.Scanner;
 
 public class CommandInterface {
 
@@ -28,13 +26,23 @@ public class CommandInterface {
 
     public void printMenu() {
         printStream.println("1: List of books");
+        printStream.println("0: Exit program");
     }
 
     public void selectOption() throws IOException {
-        if(bufferedReader.readLine().equals("1")){
-            printBooks();
-        }else{
-            this.printStream.println("Please select a valid option!");
+        switch (bufferedReader.readLine()){
+            case "1":
+                printBooks();
+                break;
+            case "0":
+                exit();
+                break;
+            default:
+                this.printStream.println("Please select a valid option!");
         }
+    }
+
+    private void exit() {
+            System.exit(0);
     }
 }
