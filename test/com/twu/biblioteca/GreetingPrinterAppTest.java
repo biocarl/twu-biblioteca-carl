@@ -11,9 +11,9 @@ public class GreetingPrinterAppTest {
 
     @Test
     public void printGreeting_printsExpectedGreeting() {
-        FakePrintStream fakePrintStream = new FakePrintStream(System.out);
-        GreetingPrinter greetingPrinter = new GreetingPrinter(fakePrintStream);
+        SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
+        GreetingPrinter greetingPrinter = new GreetingPrinter(spyPrintStream);
         greetingPrinter.printGreeting();
-        assertThat(fakePrintStream.printedString(), is("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!\n"));
+        assertThat(spyPrintStream.printedStrings().get(0), is("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!"));
     }
 }
