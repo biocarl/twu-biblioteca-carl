@@ -4,7 +4,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 
 public class FakePrintStream extends PrintStream {
-    private String printedString;
+    private String printedString = "";
 
     public FakePrintStream(OutputStream out) {
         super(out);
@@ -12,7 +12,7 @@ public class FakePrintStream extends PrintStream {
 
     @Override
     public void println(String string) {
-        printedString = string;
+        printedString += string +"\n";
     }
 
     public String printedString() {
