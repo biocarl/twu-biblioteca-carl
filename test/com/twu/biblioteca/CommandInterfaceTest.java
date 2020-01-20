@@ -32,16 +32,28 @@ public class CommandInterfaceTest {
 
 
     @Test
-    public void initMenu_whenNonExistingOptionRead_printsMenu() throws IOException {
+    public void initMenu_printsAvailableOptions() throws IOException {
+        SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
+        Book[] books = getBooks();
+        BufferedReader bufferedReader = mock(BufferedReader.class);
+
+        CommandInterface commandInterface = new CommandInterface(spyPrintStream, bufferedReader, books);
+        commandInterface.printMenu();
+
+        assertThat(spyPrintStream.printedStrings().get(0), is("1: List of books"));
+    }
+
+    @Test
+    public void initMenu_whenNonExistingOptionRead_printsInvalidOption() throws IOException {
         SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
         Book[] books = getBooks();
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("-1"); //select invalid option
         CommandInterface commandInterface = new CommandInterface(spyPrintStream, bufferedReader, books);
 
-        commandInterface.initMenu();
+        commandInterface.selectOption();
 
-        assertThat(spyPrintStream.printedStrings().get(0), is("1: List of books"));
+        assertThat(spyPrintStream.printedStrings().get(0), is("Please select a valid option!"));
     }
 
     @Test
@@ -52,11 +64,10 @@ public class CommandInterfaceTest {
         when(bufferedReader.readLine()).thenReturn("1"); //select option 1
         CommandInterface commandInterface = new CommandInterface(spyPrintStream, bufferedReader, books);
 
-        commandInterface.initMenu();
+        commandInterface.selectOption();
 
-        assertThat(spyPrintStream.printedStrings().get(0), is("1: List of books"));
-        assertThat(spyPrintStream.printedStrings().get(1), is(""+books[0]));
-        assertThat(spyPrintStream.printedStrings().get(2), is(""+books[1]));
+        assertThat(spyPrintStream.printedStrings().get(0), is(""+books[0]));
+        assertThat(spyPrintStream.printedStrings().get(1), is(""+books[1]));
     }
 
 }

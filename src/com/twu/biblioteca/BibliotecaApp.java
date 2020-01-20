@@ -15,8 +15,12 @@ public class BibliotecaApp {
         //Default books
         Book[] books = {new Book("Demian", "Herman Hesse",1982)};
 
-
         CommandInterface commandInterface = new CommandInterface(System.out, new BufferedReader(new InputStreamReader( System.in)), books);
-        commandInterface.initMenu();
+
+        // Event loop
+        while(true) {
+            commandInterface.printMenu();
+            commandInterface.selectOption();
+        }
     }
 }

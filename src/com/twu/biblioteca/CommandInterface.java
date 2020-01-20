@@ -26,10 +26,15 @@ public class CommandInterface {
         }
     }
 
-    public void initMenu() throws IOException {
+    public void printMenu() {
         printStream.println("1: List of books");
+    }
+
+    public void selectOption() throws IOException {
         if(bufferedReader.readLine().equals("1")){
             printBooks();
+        }else{
+            this.printStream.println("Please select a valid option!");
         }
     }
 }
