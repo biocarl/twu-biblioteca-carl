@@ -57,5 +57,18 @@ public class BookControllerTest {
 
          assertThat(checkOutSuccessful, is(false));
      }
+     @Test
+    public void returnBook_whenCalledOnCheckoutBook_isSuccessful(){
+         BookRepository spyBookRepository = mock(BookRepository.class);
+         ArrayList<Book> books = getBooks();
+         books.get(0).setIsCheckout(true);
+         String bookName = books.get(0).getTitle();
+         when(spyBookRepository.getAll()).thenReturn(books);
+
+         BookController controller = new BookController(spyBookRepository);
+         boolean returnIsSuccessful = controller.returnBook(bookName);
+
+         assertThat(returnIsSuccessful, is(true));
+     }
 
 }

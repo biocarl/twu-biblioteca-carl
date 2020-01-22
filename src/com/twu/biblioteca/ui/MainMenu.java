@@ -27,7 +27,8 @@ public class MainMenu {
 
     public void printMenu() {
         printStream.println("1: List of available books");
-        printStream.println("2: Check-Out book");
+        printStream.println("2: Check-Out a book");
+        printStream.println("3: Return a book");
         printStream.println("0: Exit program");
     }
 
@@ -39,6 +40,10 @@ public class MainMenu {
             case "2":
                 CheckoutMenu checkoutMenu = new CheckoutMenu(printStream, bufferedReader, bookController);
                 checkoutMenu.inflate();
+                break;
+            case "3":
+                ReturnMenu returnMenu = new ReturnMenu(printStream,bufferedReader,bookController);
+                returnMenu.inflate();
                 break;
             case "0":
                 exit();

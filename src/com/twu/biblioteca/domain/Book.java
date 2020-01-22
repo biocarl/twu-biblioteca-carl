@@ -34,4 +34,8 @@ public class Book {
     public void setID(int id) {
         this.id = id;
     }
+
+    public String getTitle() {
+        return bookTitle;
+    }
 }

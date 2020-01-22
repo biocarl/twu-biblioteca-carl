@@ -3,6 +3,7 @@ package com.twu.biblioteca;
 import com.twu.biblioteca.domain.Book;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class BookController {
@@ -34,4 +35,14 @@ public class BookController {
         return bookRepository.getById(id);
     }
 
+    public boolean returnBook(String bookName) {
+        Optional<Book> book = bookRepository.getAll().stream().filter(b -> b.getTitle().equals(bookName)).findFirst();
+        if(book.isPresent() && book.get().isCheckout()){
+            Book b = book.get();
+            b.setIsCheckout(false);
+            bookRepository.update(b);
+            return true;
+        }
+        return false;
+    }
 }
