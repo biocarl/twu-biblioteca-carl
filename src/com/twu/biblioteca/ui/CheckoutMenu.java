@@ -36,10 +36,12 @@ public class CheckoutMenu {
     public void selectBook() throws IOException {
         int selection = Integer.parseInt(bufferedReader.readLine()) - 1; // enumeration starts with 1, array with 0
         List<Book> allBooks = bookController.getAllBooks();
-        if (selection >= 0 && selection < allBooks.size() - 1) {
+        if (selection >= 0 && selection < allBooks.size()) {
             final boolean checkoutSuccessful = bookController.checkoutBook(allBooks.get(selection).getID());
             if (checkoutSuccessful) {
                 this.printStream.println("Thank you! Enjoy the book");
+            }else{
+                this.printStream.println("Sorry, that book is not available");
             }
         }
     }

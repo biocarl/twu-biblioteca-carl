@@ -1,14 +1,18 @@
 package com.twu.biblioteca.functional;
 
+import com.twu.biblioteca.BookRepository;
 import com.twu.biblioteca.SpyPrintStream;
 import com.twu.biblioteca.BookController;
+import com.twu.biblioteca.domain.Book;
 import com.twu.biblioteca.ui.CheckoutMenu;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
+import static com.twu.biblioteca.TestHelper.getBooks;
 import static com.twu.biblioteca.TestHelper.getInMemoryDatabase;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -51,7 +55,7 @@ public class CheckoutMenuFunctionalTest {
     }
 
     @Test
-    public void selectOption_whenSelectingBookForCheckout_responseMessageIsPrinted() throws IOException {
+    public void selectOption_whenSelectingBookAvailableBookForCheckout_positiveResponseMessageIsPrinted() throws IOException {
         SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("1"); //select first book
@@ -60,5 +64,21 @@ public class CheckoutMenuFunctionalTest {
         checkoutMenu.selectBook();
 
         assertThat(spyPrintStream.printedStrings().get(0), is("Thank you! Enjoy the book"));
+    }
+
+    @Test
+    public void selectOption_whenSelectingBookNotAvailableForCheckout_negativeResponseMessageIsPrinted() throws IOException {
+        SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
+        BufferedReader bufferedReader = mock(BufferedReader.class);
+        when(bufferedReader.readLine()).thenReturn("1"); //select first book
+
+        BookController controller = mock(BookController.class);
+        when(controller.getAllBooks()).thenReturn(getBooks());
+        when(controller.checkoutBook(1)).thenReturn(false);
+
+        CheckoutMenu checkoutMenu = new CheckoutMenu(spyPrintStream, bufferedReader, controller);
+        checkoutMenu.selectBook();
+
+        assertThat(spyPrintStream.printedStrings().get(0), is("Sorry, that book is not available"));
     }
 }
