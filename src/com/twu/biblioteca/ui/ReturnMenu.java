@@ -32,6 +32,8 @@ public class ReturnMenu {
         final boolean bookReturnSuccessful = this.bookController.returnBook(bookTitle);
         if(bookReturnSuccessful){
             this.printStream.println("Thank you for returning the book");
+        }else{
+            this.printStream.println("This is not a valid book to return.");
         }
     }
 }

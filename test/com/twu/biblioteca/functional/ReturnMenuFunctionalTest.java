@@ -57,4 +57,20 @@ public class ReturnMenuFunctionalTest {
         assertThat(spyPrintStream.printedStrings().get(0), is("Thank you for returning the book"));
     }
 
+    @Test
+    public void returnBook_whenInValidBookTitle_isReturningFailureMessage() throws IOException {
+        final int bookId = 1;
+        bookController.checkoutBook(bookId);
+        final String checkedOutBookTitle = bookController.getById(bookId).getTitle();
+
+        SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
+        BufferedReader bufferedReader = mock(BufferedReader.class);
+        when(bufferedReader.readLine()).thenReturn(checkedOutBookTitle+"ABC"); //Input name of checked-out book
+
+        ReturnMenu returnMenu = new ReturnMenu(spyPrintStream,bufferedReader,bookController);
+        returnMenu.inflate();
+
+        assertThat(spyPrintStream.printedStrings().get(0), is("This is not a valid book to return."));
+    }
+
 }
