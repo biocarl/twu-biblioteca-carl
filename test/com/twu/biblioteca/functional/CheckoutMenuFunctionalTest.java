@@ -30,7 +30,7 @@ public class CheckoutMenuFunctionalTest {
         BufferedReader bufferedReader = mock(BufferedReader.class);
 
         CheckoutMenu checkoutMenu = new CheckoutMenu(spyPrintStream, bufferedReader, bookController);
-        checkoutMenu.printBookOptions();
+        checkoutMenu.printAllBooks();
 
         assertThat(spyPrintStream.printedStrings().get(0), is("1\t" + bookController.getById(1)));
         assertThat(spyPrintStream.printedStrings().get(1), is("2\t" + bookController.getById(2)));
@@ -48,5 +48,17 @@ public class CheckoutMenuFunctionalTest {
         checkoutMenu.selectBook();
 
         assertThat(true, is(bookController.getById(1).isCheckout()));
+    }
+
+    @Test
+    public void selectOption_whenSelectingBookForCheckout_responseMessageIsPrinted() throws IOException {
+        SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
+        BufferedReader bufferedReader = mock(BufferedReader.class);
+        when(bufferedReader.readLine()).thenReturn("1"); //select first book
+
+        CheckoutMenu checkoutMenu = new CheckoutMenu(spyPrintStream, bufferedReader, bookController);
+        checkoutMenu.selectBook();
+
+        assertThat(spyPrintStream.printedStrings().get(0), is("Thank you! Enjoy the book"));
     }
 }

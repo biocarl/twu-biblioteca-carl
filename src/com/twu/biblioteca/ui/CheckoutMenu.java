@@ -21,13 +21,13 @@ public class CheckoutMenu {
     }
 
     public void inflate() throws IOException {
-        printBookOptions();
+        printAllBooks();
         selectBook();
     }
 
-    public void printBookOptions() {
+    public void printAllBooks() {
         int i = 1;
-        for (Book book : bookController.getAvailableBooks()) {
+        for (Book book : bookController.getAllBooks()) {
             this.printStream.println(i + "\t" + book.toString());
             i++;
         }
@@ -35,9 +35,12 @@ public class CheckoutMenu {
 
     public void selectBook() throws IOException {
         int selection = Integer.parseInt(bufferedReader.readLine()) - 1; // enumeration starts with 1, array with 0
-        List<Book> availableBooks = bookController.getAvailableBooks();
-        if (selection >= 0 && selection < availableBooks.size() - 1) {
-            bookController.checkoutBook(availableBooks.get(selection).getID());
+        List<Book> allBooks = bookController.getAllBooks();
+        if (selection >= 0 && selection < allBooks.size() - 1) {
+            final boolean checkoutSuccessful = bookController.checkoutBook(allBooks.get(selection).getID());
+            if (checkoutSuccessful) {
+                this.printStream.println("Thank you! Enjoy the book");
+            }
         }
     }
 }

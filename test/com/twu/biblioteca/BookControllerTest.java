@@ -28,4 +28,34 @@ public class BookControllerTest {
 
         assertThat(controller.getAvailableBooks().size(), is(getBooks().size() - 1));
     }
+
+    @Test
+    public void checkoutBook_whenNotCheckedOutBefore_returnsSuccessful() throws IOException {
+        BookRepository spyBookRepository = mock(BookRepository.class);
+        ArrayList<Book> books = getBooks();
+        Book book = getBooks().get(0);
+        assertThat(book.isCheckout(), is(false));
+        when(spyBookRepository.getById(1)).thenReturn(book);
+
+        BookController controller = new BookController(spyBookRepository);
+        boolean checkOutSuccessful = controller.checkoutBook(1);
+
+        assertThat(checkOutSuccessful, is(true));
+    }
+
+    @Test
+     public void checkoutBook_whenAlreadyCheckedOut_returnsUnSuccessful() throws IOException {
+         BookRepository spyBookRepository = mock(BookRepository.class);
+         ArrayList<Book> books = getBooks();
+         Book book = getBooks().get(0);
+         book.setIsCheckout(true);
+         assertThat(book.isCheckout(), is(true));
+         when(spyBookRepository.getById(1)).thenReturn(book);
+
+         BookController controller = new BookController(spyBookRepository);
+         boolean checkOutSuccessful = controller.checkoutBook(1);
+
+         assertThat(checkOutSuccessful, is(false));
+     }
+
 }

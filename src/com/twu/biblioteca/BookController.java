@@ -16,10 +16,18 @@ public class BookController {
         return bookRepository.getAll().stream().filter(book -> !book.isCheckout()).collect(Collectors.toList());
     }
 
-    public void checkoutBook(int id) {
+    public List<Book> getAllBooks() {
+        return bookRepository.getAll();
+    }
+
+    public boolean checkoutBook(int id) {
         Book book = bookRepository.getById(id);
-        book.setIsCheckout(true);
-        bookRepository.update(book);
+        if(! book.isCheckout()) {
+            book.setIsCheckout(true);
+            bookRepository.update(book);
+            return true;
+        }
+        return false;
     }
 
     public Book getById(int id) {

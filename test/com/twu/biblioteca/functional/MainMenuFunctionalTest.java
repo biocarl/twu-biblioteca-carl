@@ -25,7 +25,7 @@ public class MainMenuFunctionalTest {
     }
 
     @Test
-    public void printBooks_printsExistingBooksWithDetailsAndFormatted() {
+    public void printAllBooks_printsExistingBooksWithDetailsAndFormatted() {
         SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
         MainMenu mainMenu = new MainMenu(spyPrintStream, null, bookController);
 
