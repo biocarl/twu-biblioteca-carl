@@ -18,7 +18,7 @@ public class SpyPrintStream extends PrintStream {
     }
 
     public List<String> printedStrings() {
-       return printedStrings;
+        return printedStrings;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.domain.Book;
+import com.twu.biblioteca.ui.MainMenu;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,14 +14,17 @@ public class BibliotecaApp {
         greetingPrinter.printGreeting();
 
         //Default books
-        Book[] books = {new Book("Demian", "Herman Hesse",1982)};
+        BookRepository bookRepository = new BookRepository();
+        bookRepository.add(new Book("Demian", "Herman Hesse", 1919));
+        bookRepository.add(new Book("Moonwalking with Einstein", "Joshua Foer", 2011));
+        bookRepository.add(new Book("Gödel, Escher, Bach: An Eternal Golden Braid", "Douglas Hofstadter\n", 1979));
 
-        CommandInterface commandInterface = new CommandInterface(System.out, new BufferedReader(new InputStreamReader( System.in)), books);
+        BookController controller = new BookController(bookRepository);
+        MainMenu mainMenu = new MainMenu(System.out, new BufferedReader(new InputStreamReader(System.in)), controller);
 
         // Event loop
-        while(true) {
-            commandInterface.printMenu();
-            commandInterface.selectOption();
+        while (true) {
+            mainMenu.inflate();
         }
     }
 }
