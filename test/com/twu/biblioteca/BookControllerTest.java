@@ -44,31 +44,46 @@ public class BookControllerTest {
     }
 
     @Test
-     public void checkoutBook_whenAlreadyCheckedOut_returnsUnSuccessful() throws IOException {
-         BookRepository spyBookRepository = mock(BookRepository.class);
-         ArrayList<Book> books = getBooks();
-         Book book = getBooks().get(0);
-         book.setIsCheckout(true);
-         assertThat(book.isCheckout(), is(true));
-         when(spyBookRepository.getById(1)).thenReturn(book);
+    public void checkoutBook_whenAlreadyCheckedOut_returnsUnSuccessful() throws IOException {
+        BookRepository spyBookRepository = mock(BookRepository.class);
+        ArrayList<Book> books = getBooks();
+        Book book = getBooks().get(0);
+        book.setIsCheckout(true);
+        assertThat(book.isCheckout(), is(true));
+        when(spyBookRepository.getById(1)).thenReturn(book);
 
-         BookController controller = new BookController(spyBookRepository);
-         boolean checkOutSuccessful = controller.checkoutBook(1);
+        BookController controller = new BookController(spyBookRepository);
+        boolean checkOutSuccessful = controller.checkoutBook(1);
 
-         assertThat(checkOutSuccessful, is(false));
-     }
-     @Test
-    public void returnBook_whenCalledOnCheckoutBook_isSuccessful(){
-         BookRepository spyBookRepository = mock(BookRepository.class);
-         ArrayList<Book> books = getBooks();
-         books.get(0).setIsCheckout(true);
-         String bookName = books.get(0).getTitle();
-         when(spyBookRepository.getAll()).thenReturn(books);
+        assertThat(checkOutSuccessful, is(false));
+    }
 
-         BookController controller = new BookController(spyBookRepository);
-         boolean returnIsSuccessful = controller.returnBook(bookName);
+    @Test
+    public void returnBook_whenBookNameInvalid_returnsUnSuccessful() throws IOException {
+        BookRepository spyBookRepository = mock(BookRepository.class);
+        ArrayList<Book> books = getBooks();
+        String bookName = books.get(0).getTitle();
+        when(spyBookRepository.getAll()).thenReturn(books);
 
-         assertThat(returnIsSuccessful, is(true));
-     }
+        BookController controller = new BookController(spyBookRepository);
+        boolean returnIsSuccessful = controller.returnBook(bookName+"ABC");
+
+        assertThat(returnIsSuccessful, is(false));
+
+    }
+
+    @Test
+    public void returnBook_whenCalledOnValidBookNameAndCheckedOutBook_isSuccessful() {
+        BookRepository spyBookRepository = mock(BookRepository.class);
+        ArrayList<Book> books = getBooks();
+        books.get(0).setIsCheckout(true);
+        String bookName = books.get(0).getTitle();
+        when(spyBookRepository.getAll()).thenReturn(books);
+
+        BookController controller = new BookController(spyBookRepository);
+        boolean returnIsSuccessful = controller.returnBook(bookName);
+
+        assertThat(returnIsSuccessful, is(true));
+    }
 
 }

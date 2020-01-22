@@ -29,6 +29,9 @@ public class ReturnMenu {
 
     public void inflate() throws IOException {
         final String bookTitle = bufferedReader.readLine();
-        this.bookController.returnBook(bookTitle);
+        final boolean bookReturnSuccessful = this.bookController.returnBook(bookTitle);
+        if(bookReturnSuccessful){
+            this.printStream.println("Thank you for returning the book");
+        }
     }
 }
