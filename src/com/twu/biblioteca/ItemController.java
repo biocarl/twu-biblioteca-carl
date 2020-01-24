@@ -14,7 +14,7 @@ public class ItemController {
         this.itemRepository = itemRepository;
     }
 
-    public void setItemType (String itemType){
+    public void setItemType(String itemType) {
         this.itemType = itemType;
     }
 
@@ -28,7 +28,7 @@ public class ItemController {
 
     public boolean checkoutItem(int id) {
         Item item = itemRepository.getById(id);
-        if(! item.isCheckout()) {
+        if (!item.isCheckout()) {
             item.setIsCheckout(true);
             itemRepository.update(item);
             return true;
@@ -42,7 +42,7 @@ public class ItemController {
 
     public boolean returnItem(String title) {
         Optional<Item> item = itemRepository.getAll().stream().filter(b -> b.getTitle().equals(title)).findFirst();
-        if(item.isPresent() && item.get().isCheckout()){
+        if (item.isPresent() && item.get().isCheckout()) {
             Item b = item.get();
             b.setIsCheckout(false);
             itemRepository.update(b);

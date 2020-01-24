@@ -1,7 +1,7 @@
 package com.twu.biblioteca.functional;
 
-import com.twu.biblioteca.SpyPrintStream;
 import com.twu.biblioteca.ItemController;
+import com.twu.biblioteca.SpyPrintStream;
 import com.twu.biblioteca.ui.CheckoutMenu;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,8 +9,8 @@ import org.junit.Test;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import static com.twu.biblioteca.TestHelper.getItems;
 import static com.twu.biblioteca.TestHelper.getInMemoryDatabase;
+import static com.twu.biblioteca.TestHelper.getItems;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;

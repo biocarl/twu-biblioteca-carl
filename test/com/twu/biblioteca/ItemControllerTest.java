@@ -23,9 +23,22 @@ public class ItemControllerTest {
         items.get(0).setIsCheckout(true);
         when(spyItemRepository.getAll()).thenReturn(items);
         ItemController controller = new ItemController(spyItemRepository);
-        controller.getAvailableItemsOfType();
 
         assertThat(controller.getAvailableItemsOfType().size(), is(getItems().size() - 1));
+    }
+
+    @Test
+    public void availableItems_whenSettingMovieType_returnsOnlyMoviesItems() throws IOException {
+        ItemRepository spyItemRepository = mock(ItemRepository.class);
+        ArrayList<Item> items = getItems();
+        items.get(0).setIsCheckout(true);
+        when(spyItemRepository.getAll()).thenReturn(items);
+        ItemController controller = new ItemController(spyItemRepository);
+        controller.setItemType("movie");
+        controller.getAvailableItemsOfType();
+
+        int firstMovieIDInDummyData = getItems().stream().filter(e -> e.getType().equals("movie")).findFirst().get().getID();
+        assertThat(controller.getAvailableItemsOfType().get(0).getID() == firstMovieIDInDummyData, is(true));
     }
 
     @Test
@@ -65,7 +78,7 @@ public class ItemControllerTest {
         when(spyItemRepository.getAll()).thenReturn(items);
 
         ItemController controller = new ItemController(spyItemRepository);
-        boolean returnIsSuccessful = controller.returnItem(itemName+"ABC");
+        boolean returnIsSuccessful = controller.returnItem(itemName + "ABC");
 
         assertThat(returnIsSuccessful, is(false));
 

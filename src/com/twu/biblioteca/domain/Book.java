@@ -41,7 +41,7 @@ public class Book implements Item {
         return title;
     }
 
-    public String getType(){
+    public String getType() {
         return this.type;
     }
 

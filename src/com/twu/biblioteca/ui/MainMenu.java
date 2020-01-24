@@ -1,13 +1,13 @@
 package com.twu.biblioteca.ui;
 
 import com.twu.biblioteca.ItemController;
-import com.twu.biblioteca.domain.Item;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Optional;
 
-public class MainMenu {
+public class MainMenu implements Menu {
 
     private final PrintStream printStream;
     private final BufferedReader bufferedReader;
@@ -19,39 +19,42 @@ public class MainMenu {
         this.bufferedReader = bufferedReader;
     }
 
-    public void printAvailableItems() {
-        for (Item item : itemController.getAvailableItemsOfType()) {
-            this.printStream.println(item.toString());
-        }
-    }
-
     public void printMenu() {
-        printStream.println("1: List of available books");
+        printStream.println("1: List all available books");
         printStream.println("2: Check-Out a book");
         printStream.println("3: Return a book");
+        printStream.println("4: List of available movies");
         printStream.println("0: Exit program");
     }
 
     public void selectItem() throws IOException {
+        Optional<Menu> menu = Optional.empty();
+
         switch (bufferedReader.readLine()) {
             case "1":
-                printAvailableItems();
+                itemController.setItemType("book");
+                menu = Optional.of(new ListMenu(printStream, itemController));
                 break;
             case "2":
                 itemController.setItemType("book");
-                CheckoutMenu checkoutMenu = new CheckoutMenu(printStream, bufferedReader, itemController);
-                checkoutMenu.inflate();
+                menu = Optional.of(new CheckoutMenu(printStream, bufferedReader, itemController));
                 break;
             case "3":
                 itemController.setItemType("book");
-                ReturnMenu returnMenu = new ReturnMenu(printStream,bufferedReader, itemController);
-                returnMenu.inflate();
+                menu = Optional.of(new ReturnMenu(printStream, bufferedReader, itemController));
+                break;
+            case "4":
+                itemController.setItemType("movie");
+                menu = Optional.of(new ListMenu(printStream, itemController));
                 break;
             case "0":
                 exit();
                 break;
             default:
                 this.printStream.println("Please select a valid option!");
+        }
+        if (menu.isPresent()) {
+            menu.get().inflate();
         }
     }
 

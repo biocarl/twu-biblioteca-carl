@@ -32,12 +32,12 @@ public class ReturnMenuFunctionalTest {
         SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn(checkedOutItemTitle); //Input name of checked-out Item
-        assertThat(false,  is (itemController.getAvailableItemsOfType().stream().anyMatch(e->e.getTitle().equals(checkedOutItemTitle))));
+        assertThat(false, is(itemController.getAvailableItemsOfType().stream().anyMatch(e -> e.getTitle().equals(checkedOutItemTitle))));
 
-        ReturnMenu returnMenu = new ReturnMenu(spyPrintStream,bufferedReader, itemController);
+        ReturnMenu returnMenu = new ReturnMenu(spyPrintStream, bufferedReader, itemController);
         returnMenu.inflate();
 
-        assertThat(true,  is (itemController.getAvailableItemsOfType().stream().anyMatch(e->e.getTitle().equals(checkedOutItemTitle))));
+        assertThat(true, is(itemController.getAvailableItemsOfType().stream().anyMatch(e -> e.getTitle().equals(checkedOutItemTitle))));
     }
 
 
@@ -53,7 +53,7 @@ public class ReturnMenuFunctionalTest {
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn(checkedOutItemTitle); //Input name of checked-out item
 
-        ReturnMenu returnMenu = new ReturnMenu(spyPrintStream,bufferedReader, itemController);
+        ReturnMenu returnMenu = new ReturnMenu(spyPrintStream, bufferedReader, itemController);
         returnMenu.inflate();
 
         assertThat(spyPrintStream.printedStrings().get(0), is("Thank you for returning the " + checkedOutItemType));
@@ -67,12 +67,12 @@ public class ReturnMenuFunctionalTest {
 
         SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
         BufferedReader bufferedReader = mock(BufferedReader.class);
-        when(bufferedReader.readLine()).thenReturn(checkedOutItemTitle+"ABC"); //Input name of checked-out book
+        when(bufferedReader.readLine()).thenReturn(checkedOutItemTitle + "ABC"); //Input name of checked-out book
 
-        ReturnMenu returnMenu = new ReturnMenu(spyPrintStream,bufferedReader, itemController);
+        ReturnMenu returnMenu = new ReturnMenu(spyPrintStream, bufferedReader, itemController);
         returnMenu.inflate();
 
-        assertThat(spyPrintStream.printedStrings().get(0), is(String.format("This is not a valid %s to return.",itemController.getItemType())));
+        assertThat(spyPrintStream.printedStrings().get(0), is(String.format("This is not a valid %s to return.", itemController.getItemType())));
     }
 
 }
