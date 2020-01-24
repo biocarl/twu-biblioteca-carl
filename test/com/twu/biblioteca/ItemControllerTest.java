@@ -42,6 +42,22 @@ public class ItemControllerTest {
     }
 
     @Test
+    public void checkoutItem_whenNotCheckedOutBeforeAndMovieType_returnsSuccessful() throws IOException {
+        ItemRepository spyItemRepository = mock(ItemRepository.class);
+        ArrayList<Item> items = getItems();
+        int firstMovieIDInDummyData = items.stream().filter(e -> e.getType().equals("movie")).findFirst().get().getID();
+        Item item = getItems().get(firstMovieIDInDummyData);
+        assertThat(item.isCheckout(), is(false));
+        when(spyItemRepository.getById(firstMovieIDInDummyData)).thenReturn(item);
+
+        ItemController controller = new ItemController(spyItemRepository);
+        controller.setItemType("movie");
+        boolean checkOutSuccessful = controller.checkoutItem(firstMovieIDInDummyData);
+
+        assertThat(checkOutSuccessful, is(true));
+    }
+
+    @Test
     public void checkoutItem_whenNotCheckedOutBefore_returnsSuccessful() throws IOException {
         ItemRepository spyItemRepository = mock(ItemRepository.class);
         ArrayList<Item> items = getItems();

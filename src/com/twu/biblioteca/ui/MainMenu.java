@@ -21,9 +21,11 @@ public class MainMenu implements Menu {
 
     public void printMenu() {
         printStream.println("1: List all available books");
-        printStream.println("2: Check-Out a book");
+        printStream.println("2: Checkout a book");
         printStream.println("3: Return a book");
         printStream.println("4: List of available movies");
+        printStream.println("5: Checkout a movie");
+        printStream.println("6: Return a movie");
         printStream.println("0: Exit program");
     }
 
@@ -46,6 +48,14 @@ public class MainMenu implements Menu {
             case "4":
                 itemController.setItemType("movie");
                 menu = Optional.of(new ListMenu(printStream, itemController));
+                break;
+            case "5":
+                itemController.setItemType("movie");
+                menu = Optional.of(new CheckoutMenu(printStream, bufferedReader, itemController));
+                break;
+            case "6":
+                itemController.setItemType("movie");
+                menu = Optional.of(new ReturnMenu(printStream, bufferedReader, itemController));
                 break;
             case "0":
                 exit();
