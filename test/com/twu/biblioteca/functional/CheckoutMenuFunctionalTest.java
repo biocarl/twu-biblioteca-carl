@@ -1,18 +1,15 @@
 package com.twu.biblioteca.functional;
 
-import com.twu.biblioteca.BookRepository;
 import com.twu.biblioteca.SpyPrintStream;
-import com.twu.biblioteca.BookController;
-import com.twu.biblioteca.domain.Book;
+import com.twu.biblioteca.ItemController;
 import com.twu.biblioteca.ui.CheckoutMenu;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
-import static com.twu.biblioteca.TestHelper.getBooks;
+import static com.twu.biblioteca.TestHelper.getItems;
 import static com.twu.biblioteca.TestHelper.getInMemoryDatabase;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -21,64 +18,66 @@ import static org.mockito.Mockito.when;
 
 
 public class CheckoutMenuFunctionalTest {
-    BookController bookController;
+    ItemController itemController;
 
     @Before
     public void setUp() {
-        bookController = new BookController(getInMemoryDatabase());
+        itemController = new ItemController(getInMemoryDatabase());
     }
 
     @Test
-    public void printBookOptions_printsAvailableBooksWithUniqueNumber() throws IOException {
+    public void printItemOptions_printsAvailableItemsWithUniqueNumber() throws IOException {
         SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
         BufferedReader bufferedReader = mock(BufferedReader.class);
+        CheckoutMenu checkoutMenu = new CheckoutMenu(spyPrintStream, bufferedReader, itemController);
+        checkoutMenu.printAllItems();
 
-        CheckoutMenu checkoutMenu = new CheckoutMenu(spyPrintStream, bufferedReader, bookController);
-        checkoutMenu.printAllBooks();
-
-        assertThat(spyPrintStream.printedStrings().get(0), is("1\t" + bookController.getById(1)));
-        assertThat(spyPrintStream.printedStrings().get(1), is("2\t" + bookController.getById(2)));
+        assertThat(spyPrintStream.printedStrings().get(0), is("1\t" + itemController.getById(1)));
+        assertThat(spyPrintStream.printedStrings().get(1), is("2\t" + itemController.getById(2)));
     }
 
     @Test
-    public void selectOption_whenSelectingBookForCheckout_bookIsCheckout() throws IOException {
+    public void selectOption_whenSelectingItemForCheckout_itemIsCheckout() throws IOException {
         SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
         BufferedReader bufferedReader = mock(BufferedReader.class);
-        when(bufferedReader.readLine()).thenReturn("1"); //select first book
+        when(bufferedReader.readLine()).thenReturn("1"); //select first item
 
-        CheckoutMenu checkoutMenu = new CheckoutMenu(spyPrintStream, bufferedReader, bookController);
-        assertThat(false, is(bookController.getById(1).isCheckout()));
+        CheckoutMenu checkoutMenu = new CheckoutMenu(spyPrintStream, bufferedReader, itemController);
+        assertThat(false, is(itemController.getById(1).isCheckout()));
 
-        checkoutMenu.selectBook();
+        checkoutMenu.selectItem();
 
-        assertThat(true, is(bookController.getById(1).isCheckout()));
+        assertThat(true, is(itemController.getById(1).isCheckout()));
     }
 
     @Test
-    public void selectOption_whenSelectingBookAvailableBookForCheckout_positiveResponseMessageIsPrinted() throws IOException {
+    public void selectOption_whenSelectingItemAvailableItemForCheckout_positiveResponseMessageIsPrinted() throws IOException {
         SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
         BufferedReader bufferedReader = mock(BufferedReader.class);
-        when(bufferedReader.readLine()).thenReturn("1"); //select first book
+        when(bufferedReader.readLine()).thenReturn("1"); //select first item
 
-        CheckoutMenu checkoutMenu = new CheckoutMenu(spyPrintStream, bufferedReader, bookController);
-        checkoutMenu.selectBook();
+        CheckoutMenu checkoutMenu = new CheckoutMenu(spyPrintStream, bufferedReader, itemController);
+        checkoutMenu.selectItem();
 
-        assertThat(spyPrintStream.printedStrings().get(0), is("Thank you! Enjoy the book"));
+        assertThat(spyPrintStream.printedStrings().get(0), is("Thank you! Enjoy the " + itemController.getItemType()));
     }
 
     @Test
-    public void selectOption_whenSelectingBookNotAvailableForCheckout_negativeResponseMessageIsPrinted() throws IOException {
+    public void selectOption_whenSelectingItemNotAvailableForCheckout_negativeResponseMessageIsPrinted() throws IOException {
         SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
         BufferedReader bufferedReader = mock(BufferedReader.class);
-        when(bufferedReader.readLine()).thenReturn("1"); //select first book
+        when(bufferedReader.readLine()).thenReturn("1"); //select first item
 
-        BookController controller = mock(BookController.class);
-        when(controller.getAllBooks()).thenReturn(getBooks());
-        when(controller.checkoutBook(1)).thenReturn(false);
+        ItemController controller = mock(ItemController.class);
+        final String type = "type";
+
+        when(controller.getAllItemsOfType()).thenReturn(getItems());
+        when(controller.checkoutItem(1)).thenReturn(false);
+        when(controller.getItemType()).thenReturn(type);
 
         CheckoutMenu checkoutMenu = new CheckoutMenu(spyPrintStream, bufferedReader, controller);
-        checkoutMenu.selectBook();
+        checkoutMenu.selectItem();
 
-        assertThat(spyPrintStream.printedStrings().get(0), is("Sorry, that book is not available"));
+        assertThat(spyPrintStream.printedStrings().get(0), is(String.format("Sorry, that %s is not available", type)));
     }
 }

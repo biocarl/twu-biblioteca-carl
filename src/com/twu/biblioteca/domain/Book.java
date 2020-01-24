@@ -1,22 +1,24 @@
 package com.twu.biblioteca.domain;
 
-public class Book {
-    private String bookTitle;
+public class Book implements Item {
+    private String title;
     private String author;
     private int publicationYear;
     private boolean isCheckout;
     private int id;
+    private final String type;
 
-    public Book(String bookTitle, String author, int publicationYear) {
-        this.bookTitle = bookTitle;
+    public Book(String title, String author, int publicationYear) {
+        this.title = title;
         this.author = author;
         this.publicationYear = publicationYear;
         this.isCheckout = false;
+        this.type = "book";
     }
 
     @Override
     public String toString() {
-        return String.format("%s\t%s\t%s", bookTitle, author, publicationYear);
+        return String.format("%s\t%s\t%s", title, author, publicationYear);
     }
 
     public void setIsCheckout(boolean isCheckout) {
@@ -36,6 +38,11 @@ public class Book {
     }
 
     public String getTitle() {
-        return bookTitle;
+        return title;
     }
+
+    public String getType(){
+        return this.type;
+    }
+
 }

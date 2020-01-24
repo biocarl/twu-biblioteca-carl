@@ -1,6 +1,6 @@
 package com.twu.biblioteca.functional;
 
-import com.twu.biblioteca.BookController;
+import com.twu.biblioteca.ItemController;
 import com.twu.biblioteca.SpyPrintStream;
 import com.twu.biblioteca.ui.ReturnMenu;
 import org.junit.Before;
@@ -17,60 +17,62 @@ import static org.mockito.Mockito.when;
 
 
 public class ReturnMenuFunctionalTest {
-    BookController bookController;
+    ItemController itemController;
 
     @Before
     public void setUp() {
-        bookController = new BookController(getInMemoryDatabase());
+        itemController = new ItemController(getInMemoryDatabase());
     }
 
     @Test
-    public void returnBook_whenBeforeCheckedOutBook_isAvailableAgainInBooks() throws IOException {
-        final int bookId = 1;
-        bookController.checkoutBook(bookId);
-        final String checkedOutBookTitle = bookController.getById(bookId).getTitle();
+    public void returnItem_whenBeforeCheckedOutItem_isAvailableAgainInItems() throws IOException {
+        final int itemId = 1;
+        itemController.checkoutItem(itemId);
+        final String checkedOutItemTitle = itemController.getById(itemId).getTitle();
         SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
         BufferedReader bufferedReader = mock(BufferedReader.class);
-        when(bufferedReader.readLine()).thenReturn(checkedOutBookTitle); //Input name of checked-out book
-        assertThat(false,  is (bookController.getAvailableBooks().stream().anyMatch(e->e.getTitle().equals(checkedOutBookTitle))));
+        when(bufferedReader.readLine()).thenReturn(checkedOutItemTitle); //Input name of checked-out Item
+        assertThat(false,  is (itemController.getAvailableItemsOfType().stream().anyMatch(e->e.getTitle().equals(checkedOutItemTitle))));
 
-        ReturnMenu returnMenu = new ReturnMenu(spyPrintStream,bufferedReader,bookController);
+        ReturnMenu returnMenu = new ReturnMenu(spyPrintStream,bufferedReader, itemController);
         returnMenu.inflate();
 
-        assertThat(true,  is (bookController.getAvailableBooks().stream().anyMatch(e->e.getTitle().equals(checkedOutBookTitle))));
+        assertThat(true,  is (itemController.getAvailableItemsOfType().stream().anyMatch(e->e.getTitle().equals(checkedOutItemTitle))));
     }
 
 
     @Test
-    public void returnBook_whenValidBookTitleAndCheckedOutBook_isReturningSuccessMessage() throws IOException {
-        final int bookId = 1;
-        bookController.checkoutBook(bookId);
-        final String checkedOutBookTitle = bookController.getById(bookId).getTitle();
+    public void returnItem_whenValidItemTitleAndCheckedOutItem_isReturningSuccessMessage() throws IOException {
+        final int itemId = 1;
+        itemController.checkoutItem(itemId);
+        itemController.setItemType("book");
+        final String checkedOutItemTitle = itemController.getById(itemId).getTitle();
+        final String checkedOutItemType = itemController.getById(itemId).getType();
 
         SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
         BufferedReader bufferedReader = mock(BufferedReader.class);
-        when(bufferedReader.readLine()).thenReturn(checkedOutBookTitle); //Input name of checked-out book
+        when(bufferedReader.readLine()).thenReturn(checkedOutItemTitle); //Input name of checked-out item
 
-        ReturnMenu returnMenu = new ReturnMenu(spyPrintStream,bufferedReader,bookController);
+        ReturnMenu returnMenu = new ReturnMenu(spyPrintStream,bufferedReader, itemController);
         returnMenu.inflate();
 
-        assertThat(spyPrintStream.printedStrings().get(0), is("Thank you for returning the book"));
+        assertThat(spyPrintStream.printedStrings().get(0), is("Thank you for returning the " + checkedOutItemType));
     }
 
     @Test
-    public void returnBook_whenInValidBookTitle_isReturningFailureMessage() throws IOException {
-        final int bookId = 1;
-        bookController.checkoutBook(bookId);
-        final String checkedOutBookTitle = bookController.getById(bookId).getTitle();
+    public void returnItem_whenInValidItemTitle_isReturningFailureMessage() throws IOException {
+        final int itemId = 1;
+        itemController.checkoutItem(itemId);
+        final String checkedOutItemTitle = itemController.getById(itemId).getTitle();
 
         SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
         BufferedReader bufferedReader = mock(BufferedReader.class);
-        when(bufferedReader.readLine()).thenReturn(checkedOutBookTitle+"ABC"); //Input name of checked-out book
+        when(bufferedReader.readLine()).thenReturn(checkedOutItemTitle+"ABC"); //Input name of checked-out book
 
-        ReturnMenu returnMenu = new ReturnMenu(spyPrintStream,bufferedReader,bookController);
+        ReturnMenu returnMenu = new ReturnMenu(spyPrintStream,bufferedReader, itemController);
         returnMenu.inflate();
 
-        assertThat(spyPrintStream.printedStrings().get(0), is("This is not a valid book to return."));
+        assertThat(spyPrintStream.printedStrings().get(0), is(String.format("This is not a valid %s to return.",itemController.getItemType())));
     }
 
 }

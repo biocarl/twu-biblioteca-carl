@@ -1,7 +1,7 @@
 package com.twu.biblioteca.ui;
 
-import com.twu.biblioteca.BookController;
-import com.twu.biblioteca.domain.Book;
+import com.twu.biblioteca.ItemController;
+import com.twu.biblioteca.domain.Item;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,29 +11,21 @@ public class ReturnMenu {
 
     private final PrintStream printStream;
     private final BufferedReader bufferedReader;
-    private final BookController bookController;
+    private final ItemController itemController;
 
-    public ReturnMenu(PrintStream printStream, BufferedReader bufferedReader, BookController bookController) {
+    public ReturnMenu(PrintStream printStream, BufferedReader bufferedReader, ItemController itemController) {
         this.printStream = printStream;
         this.bufferedReader = bufferedReader;
-        this.bookController = bookController;
-    }
-
-    public void printAllBooks() {
-        int i = 1;
-        for (Book book : bookController.getAllBooks()) {
-            this.printStream.println(i + "\t" + book.toString());
-            i++;
-        }
+        this.itemController = itemController;
     }
 
     public void inflate() throws IOException {
-        final String bookTitle = bufferedReader.readLine();
-        final boolean bookReturnSuccessful = this.bookController.returnBook(bookTitle);
-        if(bookReturnSuccessful){
-            this.printStream.println("Thank you for returning the book");
+        final String item = bufferedReader.readLine();
+        final boolean itemReturnSuccessful = this.itemController.returnItem(item);
+        if(itemReturnSuccessful){
+            this.printStream.println("Thank you for returning the "+ itemController.getItemType());
         }else{
-            this.printStream.println("This is not a valid book to return.");
+            this.printStream.println(String.format("This is not a valid %s to return.",itemController.getItemType()));
         }
     }
 }

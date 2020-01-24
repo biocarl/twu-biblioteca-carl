@@ -1,21 +1,22 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.domain.Book;
+import com.twu.biblioteca.domain.Item;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TestHelper {
-    public static BookRepository getInMemoryDatabase() {
-        BookRepository bookRepository = new BookRepository();
-        bookRepository.flush();
-        bookRepository.add(getBooks().get(0));
-        bookRepository.add(getBooks().get(1));
-        return bookRepository;
+    public static ItemRepository getInMemoryDatabase() {
+        ItemRepository itemRepository = new ItemRepository();
+        itemRepository.flush();
+        itemRepository.add(getItems().get(0));
+        itemRepository.add(getItems().get(1));
+        return itemRepository;
     }
 
-    public static ArrayList<Book> getBooks() {
-        return new ArrayList<>(Arrays.asList(
+    public static ArrayList<Item> getItems() {
+        return new ArrayList<Item>(Arrays.asList(
                 new Book("Name1", "Author", 1990),
                 new Book("Name2", "Author2", 1992),
                 new Book("Name3", "Author3", 1991),

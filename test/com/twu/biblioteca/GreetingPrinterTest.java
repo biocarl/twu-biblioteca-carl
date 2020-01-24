@@ -15,6 +15,6 @@ public class GreetingPrinterTest {
 
         greetingPrinter.printGreeting();
 
-        assertThat(spyPrintStream.printedStrings().get(0), is("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!"));
+        assertThat(spyPrintStream.printedStrings().get(0), is("Welcome to Biblioteca. Your one-stop-shop for great item titles in Bangalore!"));
     }
 }

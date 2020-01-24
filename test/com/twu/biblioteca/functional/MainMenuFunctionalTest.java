@@ -2,7 +2,7 @@ package com.twu.biblioteca.functional;
 
 
 import com.twu.biblioteca.SpyPrintStream;
-import com.twu.biblioteca.BookController;
+import com.twu.biblioteca.ItemController;
 import com.twu.biblioteca.ui.MainMenu;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,22 +17,22 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class MainMenuFunctionalTest {
-    BookController bookController;
+    ItemController itemController;
 
     @Before
     public void setUp() {
-        bookController = new BookController(getInMemoryDatabase());
+        itemController = new ItemController(getInMemoryDatabase());
     }
 
     @Test
-    public void printAllBooks_printsExistingBooksWithDetailsAndFormatted() {
+    public void printAllItems_printsExistingItemsWithDetailsAndFormatted() {
         SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
-        MainMenu mainMenu = new MainMenu(spyPrintStream, null, bookController);
+        MainMenu mainMenu = new MainMenu(spyPrintStream, null, itemController);
 
-        mainMenu.printAvailableBooks();
+        mainMenu.printAvailableItems();
 
-        assertThat(spyPrintStream.printedStrings().get(0), is("" + bookController.getById(1)));
-        assertThat(spyPrintStream.printedStrings().get(1), is("" + bookController.getById(2)));
+        assertThat(spyPrintStream.printedStrings().get(0), is("" + itemController.getById(1)));
+        assertThat(spyPrintStream.printedStrings().get(1), is("" + itemController.getById(2)));
     }
 
     @Test
@@ -40,35 +40,35 @@ public class MainMenuFunctionalTest {
         SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
         BufferedReader bufferedReader = mock(BufferedReader.class);
 
-        MainMenu mainMenu = new MainMenu(spyPrintStream, bufferedReader, bookController);
+        MainMenu mainMenu = new MainMenu(spyPrintStream, bufferedReader, itemController);
         mainMenu.printMenu();
 
         assertThat(spyPrintStream.printedStrings().get(0), is("1: List of available books"));
     }
 
     @Test
-    public void selectOption_whenNonExistingOptionRead_printsInvalidOption() throws IOException {
+    public void selectItem_whenNonExistingOptionRead_printsInvalidOption() throws IOException {
         SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("-1"); //select invalid option
-        MainMenu mainMenu = new MainMenu(spyPrintStream, bufferedReader, bookController);
+        MainMenu mainMenu = new MainMenu(spyPrintStream, bufferedReader, itemController);
 
-        mainMenu.selectOption();
+        mainMenu.selectItem();
 
         assertThat(spyPrintStream.printedStrings().get(0), is("Please select a valid option!"));
     }
 
     @Test
-    public void selectOption_whenOption1Read_printsAvailableBooks() throws IOException {
+    public void selectItem_whenOption1Read_printsAvailableItems() throws IOException {
         SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("1"); //select option 1
-        MainMenu mainMenu = new MainMenu(spyPrintStream, bufferedReader, bookController);
+        MainMenu mainMenu = new MainMenu(spyPrintStream, bufferedReader, itemController);
 
-        mainMenu.selectOption();
+        mainMenu.selectItem();
 
-        assertThat(spyPrintStream.printedStrings().get(0), is("" + bookController.getById(1)));
-        assertThat(spyPrintStream.printedStrings().get(1), is("" + bookController.getById(2)));
+        assertThat(spyPrintStream.printedStrings().get(0), is("" + itemController.getById(1)));
+        assertThat(spyPrintStream.printedStrings().get(1), is("" + itemController.getById(2)));
     }
 
 }

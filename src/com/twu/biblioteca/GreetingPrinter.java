@@ -10,6 +10,6 @@ public class GreetingPrinter {
     }
 
     public void printGreeting() {
-        this.printStream.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
+        this.printStream.println("Welcome to Biblioteca. Your one-stop-shop for great item titles in Bangalore!");
     }
 }

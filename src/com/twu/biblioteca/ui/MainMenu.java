@@ -1,7 +1,7 @@
 package com.twu.biblioteca.ui;
 
-import com.twu.biblioteca.BookController;
-import com.twu.biblioteca.domain.Book;
+import com.twu.biblioteca.ItemController;
+import com.twu.biblioteca.domain.Item;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,17 +11,17 @@ public class MainMenu {
 
     private final PrintStream printStream;
     private final BufferedReader bufferedReader;
-    private BookController bookController;
+    private ItemController itemController;
 
-    public MainMenu(PrintStream printStream, BufferedReader bufferedReader, BookController bookController) {
+    public MainMenu(PrintStream printStream, BufferedReader bufferedReader, ItemController itemController) {
         this.printStream = printStream;
-        this.bookController = bookController;
+        this.itemController = itemController;
         this.bufferedReader = bufferedReader;
     }
 
-    public void printAvailableBooks() {
-        for (Book book : bookController.getAvailableBooks()) {
-            this.printStream.println(book.toString());
+    public void printAvailableItems() {
+        for (Item item : itemController.getAvailableItemsOfType()) {
+            this.printStream.println(item.toString());
         }
     }
 
@@ -32,17 +32,19 @@ public class MainMenu {
         printStream.println("0: Exit program");
     }
 
-    public void selectOption() throws IOException {
+    public void selectItem() throws IOException {
         switch (bufferedReader.readLine()) {
             case "1":
-                printAvailableBooks();
+                printAvailableItems();
                 break;
             case "2":
-                CheckoutMenu checkoutMenu = new CheckoutMenu(printStream, bufferedReader, bookController);
+                itemController.setItemType("book");
+                CheckoutMenu checkoutMenu = new CheckoutMenu(printStream, bufferedReader, itemController);
                 checkoutMenu.inflate();
                 break;
             case "3":
-                ReturnMenu returnMenu = new ReturnMenu(printStream,bufferedReader,bookController);
+                itemController.setItemType("book");
+                ReturnMenu returnMenu = new ReturnMenu(printStream,bufferedReader, itemController);
                 returnMenu.inflate();
                 break;
             case "0":
@@ -59,6 +61,6 @@ public class MainMenu {
 
     public void inflate() throws IOException {
         printMenu();
-        selectOption();
+        selectItem();
     }
 }
