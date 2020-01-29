@@ -57,7 +57,7 @@ public class MainMenuFunctionalTest {
     }
 
     @Test
-    public void printMenu_whenLoggedAsUser_printsNoViewUsersOptions() throws IOException {
+    public void printMenu_whenLoggedAsUser_printsNoViewUsersOptionsButUserProfile() throws IOException {
         SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
         BufferedReader bufferedReader = mock(BufferedReader.class);
         Session.initSession("Lisa", "password2");
@@ -65,8 +65,8 @@ public class MainMenuFunctionalTest {
         MainMenu mainMenu = new MainMenu(spyPrintStream, bufferedReader, itemController, userController);
         mainMenu.printMenu();
 
-        final boolean containsAdminOption = spyPrintStream.printedStrings().stream().anyMatch(e -> e.contains("[Admin] View books checked out"));
-        assertThat(containsAdminOption, is(false));
+        final boolean containsProfileInformation = spyPrintStream.printedStrings().stream().anyMatch(e -> e.contains("7: View profile"));
+        assertThat(containsProfileInformation, is(true));
     }
 
     @Test

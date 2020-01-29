@@ -32,6 +32,8 @@ public class MainMenu implements Menu {
         printStream.println("6: Return a movie");
         if (Session.getUser().isAdmin()) {
             printStream.println("7: [Admin] View books checked out");
+        } else {
+            printStream.println("7: View profile");
         }
         printStream.println("0: Exit program");
     }
@@ -65,7 +67,11 @@ public class MainMenu implements Menu {
                 menu = Optional.of(new ReturnMenu(printStream, bufferedReader, itemController));
                 break;
             case "7":
-                menu = Optional.of(new UserListMenu(printStream, itemController, userController));
+                if (Session.getUser().isAdmin()) {
+                    menu = Optional.of(new UserListMenu(printStream, itemController, userController));
+                } else {
+                    menu = Optional.of(new UserProfileMenu(printStream));
+                }
                 break;
             case "0":
                 exit();

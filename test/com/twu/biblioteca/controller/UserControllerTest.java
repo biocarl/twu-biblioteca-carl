@@ -21,7 +21,7 @@ public class UserControllerTest {
     @Test
     public void getById_returnsCorrectUserInstance() {
         UserRepository repository = new UserRepository();
-        int id = repository.add(new User("Test1", "password1", true));
+        int id = repository.add(new User("Test1", "password1", true, null, null));
 
         UserController controller = new UserController(new UserRepository());
         User user = controller.getById(id);
@@ -31,7 +31,7 @@ public class UserControllerTest {
     @Test
     public void getAvailableBooks_returnsOnlyAssociatedBooks() {
         UserRepository repository = new UserRepository();
-        User user = new User("Test1", "password1", true);
+        User user = new User("Test1", "password1", true, null, null);
         Item book = getBook();
         Item movie = getMovie();
 //        user.addItem(book);

@@ -24,8 +24,8 @@ public class BibliotecaApp {
 
         // Setting up dummy users
         UserRepository userRepository = new UserRepository();
-        userRepository.add(new User("Carl", "password1", true));
-        userRepository.add(new User("Lisa", "password2", false));
+        userRepository.add(new User("Carl", "password1", true, "me@me.com", "001"));
+        userRepository.add(new User("Lisa", "password2", false, "123@me.com", "002"));
         UserController userController = new UserController(userRepository);
         Session.setup(userRepository);
 

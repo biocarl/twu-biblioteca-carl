@@ -53,8 +53,8 @@ public class TestHelper {
 
     public static ArrayList<User> getUsers() {
         return new ArrayList<User>(Arrays.asList(
-                new User("Carl", "password1", true),
-                new User("Lisa", "password2", false)
+                new User("Carl", "password1", true, "me@me.com", "199393831200"),
+                new User("Lisa", "password2", false, "you@me.com", "1023828129098")
         ));
     }
 }

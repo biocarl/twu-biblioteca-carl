@@ -5,11 +5,15 @@ public class User {
     private String password;
     private boolean isAdmin;
     private int id;
+    private String mail;
+    private String phone;
 
-    public User(String userName, String password, boolean isAdmin) {
+    public User(String userName, String password, boolean isAdmin, String mail, String phone) {
         this.userName = userName;
         this.password = password;
         this.isAdmin = isAdmin;
+        this.mail = mail;
+        this.phone = phone;
     }
 
     public String getUserName() {
@@ -30,5 +34,13 @@ public class User {
 
     public int getId() {
         return this.id;
+    }
+
+    public String getMail() {
+        return this.mail;
+    }
+
+    public String getPhone() {
+        return this.phone;
     }
 }
