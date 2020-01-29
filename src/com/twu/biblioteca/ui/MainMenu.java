@@ -1,6 +1,8 @@
 package com.twu.biblioteca.ui;
 
-import com.twu.biblioteca.ItemController;
+import com.twu.biblioteca.controller.ItemController;
+import com.twu.biblioteca.controller.UserController;
+import com.twu.biblioteca.security.Session;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,10 +14,12 @@ public class MainMenu implements Menu {
     private final PrintStream printStream;
     private final BufferedReader bufferedReader;
     private ItemController itemController;
+    private UserController userController;
 
-    public MainMenu(PrintStream printStream, BufferedReader bufferedReader, ItemController itemController) {
+    public MainMenu(PrintStream printStream, BufferedReader bufferedReader, ItemController itemController, UserController userController) {
         this.printStream = printStream;
         this.itemController = itemController;
+        this.userController = userController;
         this.bufferedReader = bufferedReader;
     }
 
@@ -26,6 +30,9 @@ public class MainMenu implements Menu {
         printStream.println("4: List of available movies");
         printStream.println("5: Checkout a movie");
         printStream.println("6: Return a movie");
+        if (Session.getUser().isAdmin()) {
+            printStream.println("7: [Admin] View books checked out");
+        }
         printStream.println("0: Exit program");
     }
 
@@ -56,6 +63,9 @@ public class MainMenu implements Menu {
             case "6":
                 itemController.setItemType("movie");
                 menu = Optional.of(new ReturnMenu(printStream, bufferedReader, itemController));
+                break;
+            case "7":
+                menu = Optional.of(new UserListMenu(printStream, itemController, userController));
                 break;
             case "0":
                 exit();

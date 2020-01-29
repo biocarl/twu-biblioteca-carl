@@ -8,11 +8,15 @@ public interface Item {
 
     public boolean isCheckout();
 
-    public int getID();
+    public int getId();
 
-    public void setID(int id);
+    public void setId(int id);
 
     public String getTitle();
 
     public String getType();
+
+    public int getUserId();
+
+    public void setUserId(int id);
 }

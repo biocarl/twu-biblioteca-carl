@@ -1,6 +1,6 @@
 package com.twu.biblioteca.ui;
 
-import com.twu.biblioteca.ItemController;
+import com.twu.biblioteca.controller.ItemController;
 import com.twu.biblioteca.domain.Item;
 
 import java.io.PrintStream;

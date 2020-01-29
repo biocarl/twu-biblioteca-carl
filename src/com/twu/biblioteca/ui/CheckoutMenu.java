@@ -1,6 +1,6 @@
 package com.twu.biblioteca.ui;
 
-import com.twu.biblioteca.ItemController;
+import com.twu.biblioteca.controller.ItemController;
 import com.twu.biblioteca.domain.Item;
 
 import java.io.BufferedReader;
@@ -37,7 +37,7 @@ public class CheckoutMenu implements Menu {
         int selection = Integer.parseInt(bufferedReader.readLine()) - 1; // enumeration starts with 1, array with 0
         List<Item> allItems = itemController.getAllItemsOfType();
         if (selection >= 0 && selection < allItems.size()) {
-            final boolean checkoutSuccessful = itemController.checkoutItem(allItems.get(selection).getID());
+            final boolean checkoutSuccessful = itemController.checkoutItem(allItems.get(selection).getId());
             if (checkoutSuccessful) {
                 this.printStream.println("Thank you! Enjoy the " + itemController.getItemType());
             } else {

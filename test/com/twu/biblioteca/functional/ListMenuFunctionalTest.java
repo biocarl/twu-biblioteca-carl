@@ -1,13 +1,13 @@
 package com.twu.biblioteca.functional;
 
 
-import com.twu.biblioteca.ItemController;
 import com.twu.biblioteca.SpyPrintStream;
+import com.twu.biblioteca.controller.ItemController;
 import com.twu.biblioteca.ui.ListMenu;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.twu.biblioteca.TestHelper.getInMemoryDatabase;
+import static com.twu.biblioteca.TestHelper.getInMemoryItemDatabase;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -16,7 +16,7 @@ public class ListMenuFunctionalTest {
 
     @Before
     public void setUp() {
-        itemController = new ItemController(getInMemoryDatabase());
+        itemController = new ItemController(getInMemoryItemDatabase());
     }
 
     @Test

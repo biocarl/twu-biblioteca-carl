@@ -1,6 +1,6 @@
 package com.twu.biblioteca.ui;
 
-import com.twu.biblioteca.ItemController;
+import com.twu.biblioteca.controller.ItemController;
 
 import java.io.BufferedReader;
 import java.io.IOException;

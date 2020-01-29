@@ -1,4 +1,4 @@
-package com.twu.biblioteca;
+package com.twu.biblioteca.db;
 
 import com.twu.biblioteca.domain.Item;
 
@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 public class ItemDatabase {
     private static ItemDatabase instance = null;
+
     private HashMap<Integer, Item> itemHashMap;
     private int uID_Counter = 1;
 
@@ -15,14 +16,14 @@ public class ItemDatabase {
     }
 
     public int add(Item item) {
-        item.setID(uID_Counter);
+        item.setId(uID_Counter);
         uID_Counter++;
-        this.itemHashMap.put(item.getID(), item);
-        return item.getID();
+        this.itemHashMap.put(item.getId(), item);
+        return item.getId();
     }
 
     public void update(Item item) {
-        this.itemHashMap.replace(item.getID(), item);
+        this.itemHashMap.replace(item.getId(), item);
     }
 
     public static ItemDatabase getInstance() {

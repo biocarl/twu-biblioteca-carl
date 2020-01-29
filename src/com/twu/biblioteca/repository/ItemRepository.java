@@ -1,5 +1,6 @@
-package com.twu.biblioteca;
+package com.twu.biblioteca.repository;
 
+import com.twu.biblioteca.db.ItemDatabase;
 import com.twu.biblioteca.domain.Item;
 
 import java.util.ArrayList;

@@ -5,6 +5,7 @@ public class Book implements Item {
     private String author;
     private int publicationYear;
     private boolean isCheckout;
+    private int userId;
     private int id;
     private final String type;
 
@@ -29,11 +30,11 @@ public class Book implements Item {
         return this.isCheckout;
     }
 
-    public int getID() {
+    public int getId() {
         return this.id;
     }
 
-    public void setID(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -43,6 +44,16 @@ public class Book implements Item {
 
     public String getType() {
         return this.type;
+    }
+
+    @Override
+    public int getUserId() {
+        return userId;
+    }
+
+    @Override
+    public void setUserId(int id) {
+        this.userId = id;
     }
 
 }

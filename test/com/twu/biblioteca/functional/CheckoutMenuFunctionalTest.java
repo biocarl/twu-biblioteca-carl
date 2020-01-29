@@ -1,7 +1,8 @@
 package com.twu.biblioteca.functional;
 
-import com.twu.biblioteca.ItemController;
 import com.twu.biblioteca.SpyPrintStream;
+import com.twu.biblioteca.controller.ItemController;
+import com.twu.biblioteca.security.Session;
 import com.twu.biblioteca.ui.CheckoutMenu;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,8 +10,7 @@ import org.junit.Test;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import static com.twu.biblioteca.TestHelper.getInMemoryDatabase;
-import static com.twu.biblioteca.TestHelper.getItems;
+import static com.twu.biblioteca.TestHelper.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -22,7 +22,9 @@ public class CheckoutMenuFunctionalTest {
 
     @Before
     public void setUp() {
-        itemController = new ItemController(getInMemoryDatabase());
+        itemController = new ItemController(getInMemoryItemDatabase());
+        Session.setup(getInMemoryUserDatabase());
+        Session.initSession("Carl", "password1");
     }
 
     @Test
@@ -37,7 +39,7 @@ public class CheckoutMenuFunctionalTest {
     }
 
     @Test
-    public void selectOption_whenSelectingItemForCheckout_itemIsCheckout() throws IOException {
+    public void selectOption_whenSelectingItemForCheckout_itemIsCheckoutForSpecifiedUser() throws IOException {
         SpyPrintStream spyPrintStream = new SpyPrintStream(System.out);
         BufferedReader bufferedReader = mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("1"); //select first item
@@ -48,6 +50,9 @@ public class CheckoutMenuFunctionalTest {
         checkoutMenu.selectItem();
 
         assertThat(true, is(itemController.getById(1).isCheckout()));
+        System.out.println(itemController.getById(1).getUserId());
+        System.out.println(Session.getUser().getId());
+        assertThat(true, is(itemController.getById(1).getUserId() == Session.getUser().getId()));
     }
 
     @Test

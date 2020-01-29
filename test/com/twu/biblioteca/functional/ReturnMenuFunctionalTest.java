@@ -1,7 +1,7 @@
 package com.twu.biblioteca.functional;
 
-import com.twu.biblioteca.ItemController;
 import com.twu.biblioteca.SpyPrintStream;
+import com.twu.biblioteca.controller.ItemController;
 import com.twu.biblioteca.ui.ReturnMenu;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +9,7 @@ import org.junit.Test;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import static com.twu.biblioteca.TestHelper.getInMemoryDatabase;
+import static com.twu.biblioteca.TestHelper.getInMemoryItemDatabase;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -21,7 +21,7 @@ public class ReturnMenuFunctionalTest {
 
     @Before
     public void setUp() {
-        itemController = new ItemController(getInMemoryDatabase());
+        itemController = new ItemController(getInMemoryItemDatabase());
     }
 
     @Test

@@ -9,6 +9,7 @@ public class Movie implements Item {
     boolean isCheckout;
     private int id;
     private final String type;
+    private int userId;
 
     public Movie(String title, int year, String director, int rating) {
         this.title = title;
@@ -35,12 +36,12 @@ public class Movie implements Item {
     }
 
     @Override
-    public int getID() {
+    public int getId() {
         return this.id;
     }
 
     @Override
-    public void setID(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -52,5 +53,15 @@ public class Movie implements Item {
     @Override
     public String getType() {
         return this.type;
+    }
+
+    @Override
+    public int getUserId() {
+        return userId;
+    }
+
+    @Override
+    public void setUserId(int id) {
+        this.userId = id;
     }
 }
